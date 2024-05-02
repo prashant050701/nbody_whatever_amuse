@@ -53,7 +53,7 @@ def animate_system(positions, colors, filename='newton.mp4'):
     plt.show()
 
 if __name__ == "__main__":
-    image_path = 'images/einstein.jpg'  
+    image_path = 'sample_images/einstein.jpg'  
     N = 100000  #Number of particles
     mass = 1  # Total mass of each particles
     particles, colors = setup_particles_from_image(image_path, N, mass)
