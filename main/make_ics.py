@@ -7,7 +7,7 @@ import h5py
 import main.plot_utils as pu
 
 
-class InintialConditions:
+class InitialConditions:
 
     def __init__(self, image_path, N, MASS=1, R_CM=[0, 0], V_CM=[0, 0], invert=True):
         """
