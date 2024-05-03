@@ -53,6 +53,31 @@ def animate_system(positions, colors, filename='newton.mp4'):
     anim.save(filename, writer='ffmpeg', fps=5)
     plt.show()
 
+def animate_system_3d(positions, colors, filename='einstein_new_3d.mp4'):
+    fig = plt.figure(figsize=(10, 8))
+    ax = fig.add_subplot(111, projection='3d')
+
+    def update(frame):
+        ax.clear()
+        x = positions[frame].x.value_in(units.AU)
+        y = positions[frame].y.value_in(units.AU)
+        z = positions[frame].z.value_in(units.AU)
+
+        ax.scatter(x, y, z, color=colors, s=1)
+        ax.set_xlim(-1.5, 1.5)
+        ax.set_ylim(-1.5, 1.5)
+        ax.set_zlim(-1.5, 1.5)
+
+        # Set labels and title
+        ax.set_xlabel('X (AU)')
+        ax.set_ylabel('Y (AU)')
+        ax.set_zlabel('Z (AU)')
+        ax.set_title(f"Time: {frame * 0.028:.1f} year")
+
+    anim = FuncAnimation(fig, update, frames=len(positions), repeat=False)
+    anim.save(filename, writer='ffmpeg', fps=20)
+    plt.show()
+
 if __name__ == "__main__":
     image_path = 'sample_images/einstein.jpg'  
     N = 100000  #Number of particles
@@ -61,3 +86,4 @@ if __name__ == "__main__":
     end_time = 1 | units.yr  #Simulation end time
     times, positions = evolve_system(particles, end_time)
     animate_system(positions, colors)
+    #animate_system_3d(positions, colors)
