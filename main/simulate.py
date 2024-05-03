@@ -5,18 +5,19 @@ from amuse.community.ph4.interface import ph4
 from amuse.community.bhtree.interface import BHTree
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
-from make_ics import InitialConditions
+#from make_ics import InitialConditions
+from make_ics_3d import InitialConditions #use this for depth perception
 
 def setup_particles_from_image(image_path, N, mass=1):
     ic = InitialConditions(image_path, N, MASS=mass)
     particles = Particles(N)
     particles.mass = ic.M | units.MSun
-    pos_with_z = np.hstack((ic.POS, np.zeros((ic.N, 1))))  # Append zero z-coordinates
-    particles.position = units.AU(pos_with_z)
-    #particles.position = units.AU(ic.POS)
-    vel_with_z = np.hstack((ic.VEL, np.zeros((ic.N, 1))))  # Add zero z-velocities, later will add depth perception for z
-    particles.velocity = units.kms(vel_with_z)
-    #particles.velocity = units.kms(ic.VEL)
+    #pos_with_z = np.hstack((ic.POS, np.zeros((ic.N, 1))))  # Append zero z-coordinates
+    #particles.position = units.AU(pos_with_z)
+    particles.position = units.AU(ic.POS)
+    #vel_with_z = np.hstack((ic.VEL, np.zeros((ic.N, 1))))  # Add zero z-velocities, later will add depth perception for z
+    #particles.velocity = units.kms(vel_with_z)
+    particles.velocity = units.kms(ic.VEL)
     return particles, ic.colors
 
 def evolve_system(particles, end_time, gravity_solver=BHTree):
