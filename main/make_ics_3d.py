@@ -44,7 +44,10 @@ class InitialConditions:
         indices = np.clip(indices, 0, max_index)
         y, x = np.unravel_index(indices, self.img_array.shape)
         x, y = np.array(x), np.array(y)
-        z = self.img_array[y, x]  # Use normalized image intensity as depth
+        z = self.img_array[y, x]  #used normalized image intensity as depth
+
+        z = np.interp(z, (z.min(), z.max()), (0, 10)) #exxagerated z axis
+        z = np.power(z, 3)
         return x, y, z
 
     def set_circular_velocity(self, factor=1):
