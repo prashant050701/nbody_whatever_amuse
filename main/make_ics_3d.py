@@ -19,7 +19,7 @@ class InitialConditions:
         color_array = np.array(Image.open(image_path))[::-1, :]
 
         self.img_array = np.array(img_grey)[::-1, :]
-        self.img_array = self.img_array / np.sum(self.img_array)  # Normalize to sum to 1
+        self.img_array = self.img_array / np.sum(self.img_array)  #normalising the sum to 1
         if invert:
             self.img_array = np.max(self.img_array) - self.img_array
 
@@ -30,8 +30,8 @@ class InitialConditions:
         self.colors = color_array[y, x] / 255
 
         self.POS = np.array([x, y, z]).T
-        self.POS = self.POS / np.max(self.POS.max(axis=0))  # Normalize coordinates to [0, 1]
-        self.POS = self.POS - np.mean(self.POS, axis=0)  # Center around (0, 0, 0)
+        self.POS = self.POS / np.max(self.POS.max(axis=0))
+        self.POS = self.POS - np.mean(self.POS, axis=0) 
         self.POS = self.POS + self.R_CM
 
         self.VEL = np.zeros((self.N, 3))
@@ -53,7 +53,7 @@ class InitialConditions:
     def set_circular_velocity(self, factor=1):
         radii = np.linalg.norm(self.POS - self.R_CM, axis=1)
         velocity_magnitude = factor * np.sqrt(self.MASS / radii)
-        velocity_direction = np.cross(self.POS - self.R_CM, [0, 0, 1])  # Assuming z-axis as rotation axis
+        velocity_direction = np.cross(self.POS - self.R_CM, [0, 0, 1])  #making z-axis as rotation axis
         velocity_direction = velocity_direction / np.linalg.norm(velocity_direction, axis=1)[:, np.newaxis]
         self.VEL = velocity_magnitude[:, np.newaxis] * velocity_direction
 
@@ -85,12 +85,12 @@ class InitialConditions:
             colors = self.colors
 
         if show:
-            Fig = pu.Figure(fig_size=540)  # Make sure this is adapted for 3D plotting
+            Fig = pu.Figure(fig_size=540) 
             fs = Fig.fs
             Fig.facecolor = facecolor
             Fig.ax_color = ax_color
 
-            ax = Fig.get_axes(projection='3d')  # Ensure this is set for 3D
+            ax = Fig.get_axes(projection='3d')
             ax.scatter(self.POS[:, 0], self.POS[:, 1], self.POS[:, 2], lw=0, s=fs * marker_size, c=colors)
 
             ax.set_xlim([-lim, lim])
