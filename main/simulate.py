@@ -12,21 +12,21 @@ def setup_particles_from_image(image_path, N, mass=1):
     ic = InitialConditions(image_path, N, MASS=mass)
     particles = Particles(N)
     particles.mass = ic.M | units.MSun
-    #pos_with_z = np.hstack((ic.POS, np.zeros((ic.N, 1))))  # Append zero z-coordinates
+    #pos_with_z = np.hstack((ic.POS, np.zeros((ic.N, 1)))) 
     #particles.position = units.AU(pos_with_z)
     particles.position = units.AU(ic.POS)
-    #vel_with_z = np.hstack((ic.VEL, np.zeros((ic.N, 1))))  # Add zero z-velocities, later will add depth perception for z
+    #vel_with_z = np.hstack((ic.VEL, np.zeros((ic.N, 1))))  #gave zero z-velocities, later will add depth perception for z
     #particles.velocity = units.kms(vel_with_z)
     particles.velocity = units.kms(ic.VEL)
     return particles, ic.colors
 
 def evolve_system(particles, end_time, gravity_solver=BHTree):
-    converter = nbody_system.nbody_to_si(particles.total_mass(), 1 | units.AU)  # Scale length 1 AU
+    converter = nbody_system.nbody_to_si(particles.total_mass(), 1 | units.AU)
     gravity = gravity_solver(converter)
     gravity.particles.add_particles(particles)
 
     positions = []
-    times = np.arange(0, end_time.value_in(units.yr), 0.0028) | units.yr # Timestep of one day
+    times = np.arange(0, end_time.value_in(units.yr), 0.0028) | units.yr #approx one day timestep
     for time in times:
         gravity.evolve_model(time)
         positions.append(gravity.particles.copy())
@@ -43,7 +43,7 @@ def animate_system(positions, colors, filename='newton.mp4'):
         ax.set_facecolor('black')
         ax.scatter(positions[frame].x.value_in(units.AU),
                    positions[frame].y.value_in(units.AU),
-                   color=colors,  # Use the passed colors
+                   color=colors,  #using the passed colors
                    s=2)
         ax.set_xlim(-1.5, 1.5)
         ax.set_ylim(-1.5, 1.5)
