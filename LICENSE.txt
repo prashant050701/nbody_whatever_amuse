@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2023 Pere Rosselló Truyols
+Copyright (c) 2024 Divyansh Srivastava
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
